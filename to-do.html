@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #main {
+            width: fit-content;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            gap: 20px;
+            box-shadow: 1px 1px 7px 2px #cdcccc;
+            border-radius: 10px;
+        }
+        #main button {
+            box-shadow: 1px 1px 7px 2px #cdcccc;
+            border: none;
+            padding: 7px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: rgb(90, 88, 88);
+            color: white;
+        }
+        #main #first {
+            border: 5px;
+            box-shadow: 1px 1px 7px 2px #cdcccc;
+            border-radius: 8px;
+            height: 20px;
+            padding: 8px 10px;
+        }
+        #main #second {
+            border: 5px;
+            box-shadow: 1px 1px 7px 2px #cdcccc;
+            border-radius: 8px;
+            padding: 10px 10px;
+        }
+        #main #day {
+            border: 5px;
+            box-shadow: 1px 1px 7px 2px #cdcccc;
+            border-radius: 8px;
+            height: 25px;
+            width: 110px;
+            padding: 5px 20px;
+        }
+        #mai {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .entry-box {
+            width: fit-content;
+            border: 1px solid #cdcccc;
+            padding: 18px 20px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 1px 1px 7px 2px #cdcccc;
+            background-color: #f9f9f9;
+        }
+        .entry-buttons {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <input type="text" id="first" placeholder="Title">
+        <textarea id="second" rows="5" placeholder="Description"></textarea>
+        <input type="date" id="day">
+        <button id="btn">Submit</button>
+    </div>
+    <div id="mai"></div>
+
+    <script>
+        let first = document.getElementById("first");
+        let second = document.getElementById("second");
+        let btn = document.getElementById("btn");
+        let date = document.getElementById("day");
+        let arr = JSON.parse(localStorage.getItem('entries')) || [];
+
+        function createEntryBox(obj, index) {
+            let entryBox = document.createElement('div');
+            entryBox.classList.add('entry-box');
+
+            let titleElement = document.createElement('h4');
+            titleElement.innerText = "Title";
+            let titleValue = document.createElement('p');
+            titleValue.innerText = obj.title;
+
+            let descriptionElement = document.createElement('h4');
+            descriptionElement.innerText = "Description";
+            let descriptionValue = document.createElement('p');
+            descriptionValue.innerText = obj.description;
+
+            let dateElement = document.createElement('h4');
+            dateElement.innerText = "Date";
+            let dateValue = document.createElement('p');
+            dateValue.innerText = obj.date;
+
+            entryBox.appendChild(titleElement);
+            entryBox.appendChild(titleValue);
+            entryBox.appendChild(descriptionElement);
+            entryBox.appendChild(descriptionValue);
+            entryBox.appendChild(dateElement);
+            entryBox.appendChild(dateValue);
+
+            let buttonsDiv = document.createElement('div');
+            buttonsDiv.classList.add('entry-buttons');
+
+            let editButton = document.createElement('button');
+            editButton.innerText = 'Edit';
+            editButton.addEventListener('click', function () {
+                first.value = obj.title;
+                second.value = obj.description;
+                date.value = obj.date;
+                btn.innerText = 'Update';
+                btn.onclick = function () {
+                    arr[index] = {
+                        title: first.value,
+                        description: second.value,
+                        date: date.value
+                    };
+                    saveEntries();
+                    btn.innerText = 'Submit';
+                    btn.onclick = addEntry;
+                    first.value = '';
+                    second.value = '';
+                    date.value = '';
+                };
+            });
+
+            let deleteButton = document.createElement('button');
+            deleteButton.innerText = 'Delete';
+            deleteButton.addEventListener('click', function () {
+                arr.splice(index, 1);
+                saveEntries();
+            });
+
+            buttonsDiv.appendChild(editButton);
+            buttonsDiv.appendChild(deleteButton);
+            entryBox.appendChild(buttonsDiv);
+
+            return entryBox;
+        }
+
+        function updateEntries() {
+            let mai = document.getElementById('mai');
+            mai.innerHTML = '';
+            arr.forEach((obj, index) => {
+                mai.appendChild(createEntryBox(obj, index));
+            });
+        }
+
+        function saveEntries() {
+            localStorage.setItem('entries', JSON.stringify(arr));
+            updateEntries();
+        }
+
+        function addEntry() {
+            let obj = {
+                title: first.value,
+                description: second.value,
+                date: date.value
+            };
+            arr.push(obj);
+            saveEntries();
+            first.value = '';
+            second.value = '';
+            date.value = '';
+        }
+
+        btn.addEventListener('click', addEntry);
+
+        updateEntries();
+    </script>
+</body>
+</html>
+
+<!-- 2.   User Interface Design
+              Ensure the interface is clean and intuitive.
+              Use CSS to enhance the appearance and usability of the application.
+              Ensure responsiveness for different screen sizes. -->
+
+
+
+<!-- 3.   Functionality Implementation
+              Add Task: Enable users to add a new task.
+              Edit Task: Optionally, allow users to edit an existing task.
+              Delete Task: Allow users to delete a task.
+              Complete Task: Allow users to mark a task as completed.
+ -->
+
+ <!-- 4.   Documentation
+             Project Setup: Explain how to set up the project locally.
+             Features: Describe the features of the application.
+             Usage Instructions: Provide clear instructions on how to use the application.
+
+
+
+ 5.         Deployment
+              Choose a Platform: Select a platform like GitHub Pages, Netlify, or Vercel.
+              Deployment Steps: Follow the steps for deployment specific to the chosen platform.
+  -->
