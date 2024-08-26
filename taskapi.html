@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            /* border: 2px solid black; */
+            border-radius: 10px;
+            width: 440px;
+            margin: auto;
+            padding: 20px 20px;
+            background: url('https://static.stacker.com/s3fs-public/styles/1280x720/s3/23cloudscape3Q34.jpg?token=s8XyKKkk');
+            background-repeat: no-repeat;
+            background-size: cover;
+
+        }
+        #ser{
+            margin-left: 100px;
+        }
+        #radhe{
+            margin-left: 160px;
+        }
+        button{
+            color: red;
+        }
+
+    </style>
+</head>
+<body style="background-color: #313131;">
+    <div class="container">
+        <input type="search" id="ser" value="jaipur">
+        <button onclick="getweather()">Search</button>
+        <h1 id="radhe">Name:
+            <span id="nam"></span>
+        </h1>
+        <h1>Tempreture:
+            <span id="tem"></span>
+        </h1>
+        <h1>speed:
+            <span id="spe"></span>
+        </h1>
+        <h1 id="radhe">pressure:
+            <span id="pre"></span>
+        </h1>
+        <h1>humidity:
+            <span id="hum"></span>
+        </h1>
+        <h1>deg:
+            <span id="de"></span>
+        </h1>
+        <h1 id="radhe">visibility:
+            <span id="vis"></span>
+        </h1>
+    </div>
+
+</body>
+<script>
+        let inp = document.getElementById('ser')
+    const getweather = () => {
+        let vl = inp.value
+        let url = https://api.openweathermap.org/data/2.5/weather?q=${vl}&appid=0d1f123263115c1841bb1257d845305e
+
+
+
+        // console.log(fetch(url))
+        let Name = document.getElementById('nam')
+        let print = document.getElementById('tem')
+        // let wind= document.getElementById('win')
+        let speed= document.getElementById('spe')
+        let pressure= document.getElementById('pre')
+        let humidity= document.getElementById('hum')
+        let deg= document.getElementById('de')
+        let visibility= document.getElementById('vis')
+        console.log(print)
+        async function getdata(params) {
+
+            let myweather = await fetch(url)
+            // console.log(myweather)
+
+            let data = await myweather.json()
+            console.log(data)
+            console.log(data.weather[0].description
+            )
+            console.log(data.name)
+            nam.innerHTML = `${data.name} `
+            print.innerHTML = ${Math.floor((data.main.temp)-273)}℃
+            pre.innerHTML = ${data.main.pressure} km/h
+            hum.innerHTML = ${data.main.humidity} %
+            spe.innerHTML = ${data.wind.speed} mph
+            de.innerHTML = ${data.wind.deg} °F
+            vis.innerHTML = ${data.visibility} mi
+        }
+        getdata()
+    }
+</script>
+</html>
